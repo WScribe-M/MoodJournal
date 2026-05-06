@@ -30,4 +30,24 @@ class AIRepository {
         )
         return response.choices.first().message.content
     }
+
+    suspend fun getCheckinResponse(emoji: String, intensity: Int, note: String): String {
+        val prompt = """
+            Tu es Lumi, un assistant bien être bienveillant.
+            L'utilisateur fait son check-in du jour.
+            Son émotion actuelle : $emoji.
+            Son ressenti en intensité : $intensity/100.
+            Ses notes : "$note".
+            Fais lui un retour court et chaleureux en 2-3 phrases avec un conseil personnalisé.
+        """.trimIndent()
+
+        val response = service.getCompletion(
+            apiKey = BuildConfig.HF_API_KEY,
+            request = ChatRequest(
+                model = "meta-llama/Llama-3.1-8B-Instruct",
+                messages = listOf(Message(role = "user", content = prompt))
+            )
+        )
+        return response.choices.first().message.content
+    }
 }

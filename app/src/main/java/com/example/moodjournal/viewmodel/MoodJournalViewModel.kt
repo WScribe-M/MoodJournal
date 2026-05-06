@@ -20,6 +20,20 @@ class MoodJournalViewModel : ViewModel() {
     var aiReport by mutableStateOf("")
         private set
 
+    var name by mutableStateOf("Emma")
+        private set
+
+    var checkinEmotion by mutableStateOf("")
+        private set
+
+    var checkinIntensity by mutableStateOf(0)
+        private set
+
+    var checkinNote by mutableStateOf("")
+        private set
+
+    var aiCheckinResponse by mutableStateOf("")
+        private set
 
     fun updateObjectifs(newObjectifs: MutableList<String>) {
         objectifs = newObjectifs
@@ -34,6 +48,26 @@ class MoodJournalViewModel : ViewModel() {
     fun generateReport() {
         viewModelScope.launch {
             aiReport = AIRepository.getAIReport(objectifs, reponses)
+        }
+    }
+
+    fun updateName(newName: String){
+        name = newName
+    }
+
+    fun updateCheckin(emotion: String, intensity: Int, note: String) {
+        checkinEmotion = emotion
+        checkinIntensity = intensity
+        checkinNote = note
+    }
+
+    fun generateCheckinResponse(){
+        viewModelScope.launch {
+            aiCheckinResponse = AIRepository.getCheckinResponse(
+                checkinEmotion,
+                checkinIntensity,
+                checkinNote
+            )
         }
     }
 }
