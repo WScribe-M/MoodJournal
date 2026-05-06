@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.moodjournal.ui.onboarding.GoalsScreen
 import com.example.moodjournal.ui.onboarding.QuizScreen
+import com.example.moodjournal.ui.onboarding.ReportScreen
 import com.example.moodjournal.ui.onboarding.SignupScreen
 import com.example.moodjournal.ui.onboarding.SplashScreen
 import com.example.moodjournal.viewmodel.MoodJournalViewModel
@@ -26,7 +27,10 @@ fun AppNavGraph() {
             GoalsScreen(viewModel = viewModel, onNext = { navController.navigate("quiz") })
         }
         composable("quiz") {
-            QuizScreen(viewModel = viewModel, onNext = { navController.navigate("rien")})
+            QuizScreen(viewModel = viewModel, onNext = { navController.navigate("report")})
+        }
+        composable("report") {
+            ReportScreen(viewModel = viewModel, onNext = { navController.navigate("home")})
         }
     }
 }
