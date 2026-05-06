@@ -1,14 +1,21 @@
 package com.example.moodjournal.viewmodel
 
+import android.app.Application
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.moodjournal.data.local.CheckinStorage
+import com.example.moodjournal.data.model.CheckIn
 import com.example.moodjournal.network.AIRepository
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
-class MoodJournalViewModel : ViewModel() {
+class MoodJournalViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val storage = CheckinStorage(application)
     private val AIRepository = AIRepository()
 
     var objectifs by mutableStateOf(mutableListOf<String>())
@@ -68,6 +75,20 @@ class MoodJournalViewModel : ViewModel() {
                 checkinIntensity,
                 checkinNote
             )
+            saveCheckin()
         }
     }
+
+    //Sauvegarde le check-in courant
+    fun saveCheckin() {
+        val checkin = CheckIn(
+            emotion = checkinEmotion,
+            intensity = checkinIntensity,
+            note = checkinNote,
+            date = LocalDate.now().toString()
+        )
+        storage.saveCheckin(checkin)
+    }
+
+    fun getCheckins(): List<CheckIn> = storage.getCheckins()
 }
