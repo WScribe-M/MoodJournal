@@ -29,6 +29,8 @@ import com.example.moodjournal.ui.onboarding.QuizScreen
 import com.example.moodjournal.ui.onboarding.ReportScreen
 import com.example.moodjournal.ui.onboarding.SignupScreen
 import com.example.moodjournal.ui.onboarding.SplashScreen
+import com.example.moodjournal.ui.onboarding.ToolsScreen
+import com.example.moodjournal.ui.tools.BreathingScreen
 import com.example.moodjournal.viewmodel.MoodJournalViewModel
 
 @Composable
@@ -84,7 +86,12 @@ fun AppNavGraph() {
             composable("history") {
                 HistoryScreen(viewModel = viewModel, onNext = { navController.navigate("rien") })
             }
-            composable("tools") { Text("Outils — à faire") }
+            composable("breathing") {
+                BreathingScreen(onClose = { navController.popBackStack() })
+            }
+            composable("tools") {
+                ToolsScreen(onTool = { tool -> navController.navigate(tool) })
+            }
             composable("profile") { Text("Profil — à faire") }
         }
     }
