@@ -1,6 +1,7 @@
 package com.example.moodjournal.ui.navigation
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.remember
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.DateRange
@@ -30,6 +31,7 @@ import com.example.moodjournal.ui.onboarding.ReportScreen
 import com.example.moodjournal.ui.onboarding.SignupScreen
 import com.example.moodjournal.ui.onboarding.SplashScreen
 import com.example.moodjournal.ui.onboarding.ToolsScreen
+import com.example.moodjournal.ui.profile.ProfileScreen
 import com.example.moodjournal.ui.tools.BreathingScreen
 import com.example.moodjournal.ui.tools.GratitudeScreen
 import com.example.moodjournal.viewmodel.MoodJournalViewModel
@@ -51,9 +53,13 @@ fun AppNavGraph() {
             }
         }
     ) { padding ->
+        val startDestination = remember {
+            val user = viewModel.getUser()
+            if (user != null && !user.objectifs.isNullOrEmpty()) "home" else "splash"
+        }
         NavHost(
             navController = navController,
-            startDestination = "splash",
+            startDestination = startDestination,
             modifier = Modifier.padding(padding)
         ) {
             composable("splash") {
@@ -99,9 +105,15 @@ fun AppNavGraph() {
             composable("tools") {
                 ToolsScreen(onTool = { tool -> navController.navigate(tool) })
             }
-            composable("profile") { Text("Profil — à faire") }
-            composable("signup") {
-                SignupScreen(viewModel = viewModel, onNext = { navController.navigate("goals") })
+            composable("profile") {
+                ProfileScreen(
+                    viewModel = viewModel,
+                    onLogout = {
+                        navController.navigate("splash") {
+                            popUpTo(0)
+                        }
+                    }
+                )
             }
         }
     }

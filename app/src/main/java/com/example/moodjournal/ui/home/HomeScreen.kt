@@ -26,10 +26,11 @@ fun HomeScreen(
 ){
     val today = LocalDate.now()
     val dayName = today.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.FRENCH)
+    val user = viewModel.getUser()
 
     Column(modifier = modifier.fillMaxSize().padding(24.dp)) {
         Text(dayName)
-        Text("Bonjour, ${viewModel.name}", style = MaterialTheme.typography.titleMedium)
+        Text("Bonjour, ${user?.prenom ?: "invité"}", style = MaterialTheme.typography.titleMedium)
 
         Card(
             modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),

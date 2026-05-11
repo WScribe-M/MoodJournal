@@ -20,4 +20,8 @@ class UserStorage (context: Context){
         val json = prefs.getString(key, null) ?: return null
         return gson.fromJson(json, User::class.java)
     }
+
+    fun clearUser(){
+        prefs.edit().remove(key).apply()
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.moodjournal.ui.onboarding
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -57,14 +58,20 @@ fun GoalsScreen(
                         } else {
                             objectifs = (objectifs + it).toMutableList()
                         }
-                        viewModel.updateObjectifs(objectifs)
+                        /*viewModel.updateObjectifs(objectifs)*/
                     },
                     label = { Text(it) }
                 )
             }
         }
         if (objectifs.isNotEmpty()) {
-            Button(onClick = onNext) {
+            Button(onClick = {
+                Log.d("GoalsScreen", "Bouton continuer cliqué")
+                viewModel.updateUserObjectifs(objectifs)
+                Log.d("GoalsScreen", "Avant onNext")
+                onNext()
+                Log.d("GoalsScreen", "Après onNext")
+            }) {
                 Text("Continuer")
             }
         }

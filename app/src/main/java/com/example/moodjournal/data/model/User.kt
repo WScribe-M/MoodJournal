@@ -4,5 +4,6 @@ data class User (
     val nom: String,
     val prenom: String,
     val email: String,
-    val sexe: String
+    val sexe: String,
+    val objectifs: List<String>? = emptyList()
 )

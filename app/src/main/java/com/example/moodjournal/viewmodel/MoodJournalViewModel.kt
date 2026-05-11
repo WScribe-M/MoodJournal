@@ -24,10 +24,11 @@ class MoodJournalViewModel(application: Application) : AndroidViewModel(applicat
     private val userStorage = UserStorage(application)
     private val AIRepository = AIRepository()
 
-    var objectifs by mutableStateOf(mutableListOf<String>())
-       /* Seul le ViewModel peut modifier les valeurs, pas les écrans directement.
-        - Ils passent par les fonctions updates.*/
-        private set
+    /*var objectifs by mutableStateOf(mutableListOf<String>())*/
+        /*private set*/
+
+    /* Seul le ViewModel peut modifier les valeurs, pas les écrans directement.
+       - Ils passent par les fonctions updates.*/
     var reponses by mutableStateOf(mutableListOf<Int>())
         private set
     var aiReport by mutableStateOf("")
@@ -51,10 +52,10 @@ class MoodJournalViewModel(application: Application) : AndroidViewModel(applicat
     var gratitudeResponse by mutableStateOf(List(5) { "" })
         private set
 
-    fun updateObjectifs(newObjectifs: MutableList<String>) {
+/*    fun updateObjectifs(newObjectifs: MutableList<String>) {
         objectifs = newObjectifs
-        /*Log.d("ViewModel", "Objectifs : $objectifs")*/
-    }
+        *//*Log.d("ViewModel", "Objectifs : $objectifs")*//*
+    }*/
 
     fun updateReponses(newReponses: MutableList<Int>) {
         reponses = newReponses
@@ -62,8 +63,10 @@ class MoodJournalViewModel(application: Application) : AndroidViewModel(applicat
     }
 
     fun generateReport() {
+        val user = userStorage.getUser()
+        val userObjectifs = user?.objectifs ?: emptyList()
         viewModelScope.launch {
-            aiReport = AIRepository.getAIReport(objectifs, reponses)
+            aiReport = AIRepository.getAIReport(userObjectifs, reponses)
         }
     }
 
@@ -118,4 +121,11 @@ class MoodJournalViewModel(application: Application) : AndroidViewModel(applicat
 
     fun getUser(): User? = userStorage.getUser()
 
+    fun clearUser() = userStorage.clearUser()
+
+    fun updateUserObjectifs(objectifs: List<String>) {
+        val currentUser = userStorage.getUser() ?: return
+        val updated = currentUser.copy(objectifs = objectifs)
+        userStorage.saveUser(updated)
+    }
 }
