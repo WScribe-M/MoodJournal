@@ -6,7 +6,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 // manager qui s'occupe de sauvegarder et lire les check-ins.
-class CheckinStorage(context: Context) {
+class CheckinStorage (context: Context) {
     private val prefs = context.getSharedPreferences("moodjournal", Context.MODE_PRIVATE)
     private val gson = Gson()
     private val key = "checkins"

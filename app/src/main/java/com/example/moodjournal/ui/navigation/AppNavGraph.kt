@@ -60,7 +60,7 @@ fun AppNavGraph() {
                 SplashScreen(onNext = { navController.navigate("signup") })
             }
             composable("signup") {
-                SignupScreen(onNext = { navController.navigate("goals") })
+                SignupScreen(viewModel = viewModel, onNext = { navController.navigate("goals") })
             }
             composable("goals") {
                 GoalsScreen(viewModel = viewModel, onNext = { navController.navigate("quiz") })
@@ -100,6 +100,9 @@ fun AppNavGraph() {
                 ToolsScreen(onTool = { tool -> navController.navigate(tool) })
             }
             composable("profile") { Text("Profil — à faire") }
+            composable("signup") {
+                SignupScreen(viewModel = viewModel, onNext = { navController.navigate("goals") })
+            }
         }
     }
 }
