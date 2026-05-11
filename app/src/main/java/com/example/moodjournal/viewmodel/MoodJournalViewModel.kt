@@ -5,10 +5,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moodjournal.data.local.CheckinStorage
+import com.example.moodjournal.data.local.GratitudeStorage
 import com.example.moodjournal.data.model.CheckIn
+import com.example.moodjournal.data.model.Gratitude
 import com.example.moodjournal.network.AIRepository
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -16,6 +17,7 @@ import java.time.LocalDate
 class MoodJournalViewModel(application: Application) : AndroidViewModel(application) {
 
     private val storage = CheckinStorage(application)
+    private val storageGratitude = GratitudeStorage(application)
     private val AIRepository = AIRepository()
 
     var objectifs by mutableStateOf(mutableListOf<String>())
@@ -40,6 +42,9 @@ class MoodJournalViewModel(application: Application) : AndroidViewModel(applicat
         private set
 
     var aiCheckinResponse by mutableStateOf("")
+        private set
+
+    var gratitudeResponse by mutableStateOf(List(5) { "" })
         private set
 
     fun updateObjectifs(newObjectifs: MutableList<String>) {
@@ -91,4 +96,14 @@ class MoodJournalViewModel(application: Application) : AndroidViewModel(applicat
     }
 
     fun getCheckins(): List<CheckIn> = storage.getCheckins()
+
+    fun saveGratitude(notes: List<String>) {
+        val gratitude = Gratitude(
+            notes = notes,
+            date = LocalDate.now().toString()
+        )
+        storageGratitude.saveGratitude(gratitude)
+    }
+
+    fun getGratitude(): List<Gratitude> = storageGratitude.getGratitude()
 }

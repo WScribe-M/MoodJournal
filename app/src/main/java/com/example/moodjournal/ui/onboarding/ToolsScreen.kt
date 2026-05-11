@@ -21,5 +21,8 @@ fun ToolsScreen(
         Button(onClick = { onTool("breathing") }) {
             Text("Exercice de respiration")
         }
+        Button(onClick = { onTool("gratitude") }) {
+            Text("5 choses positives")
+        }
     }
 }

@@ -31,6 +31,7 @@ import com.example.moodjournal.ui.onboarding.SignupScreen
 import com.example.moodjournal.ui.onboarding.SplashScreen
 import com.example.moodjournal.ui.onboarding.ToolsScreen
 import com.example.moodjournal.ui.tools.BreathingScreen
+import com.example.moodjournal.ui.tools.GratitudeScreen
 import com.example.moodjournal.viewmodel.MoodJournalViewModel
 
 @Composable
@@ -88,6 +89,12 @@ fun AppNavGraph() {
             }
             composable("breathing") {
                 BreathingScreen(onClose = { navController.popBackStack() })
+            }
+            composable("gratitude") {
+                GratitudeScreen(
+                    viewModel = viewModel,
+                    onClose = { navController.popBackStack() }
+                )
             }
             composable("tools") {
                 ToolsScreen(onTool = { tool -> navController.navigate(tool) })
