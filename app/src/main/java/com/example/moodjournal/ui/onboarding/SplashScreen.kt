@@ -13,6 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.moodjournal.ui.components.FilledButton
+import com.example.moodjournal.ui.components.Lumi
 
 @Composable
 fun SplashScreen(onNext: () -> Unit) {
@@ -21,10 +23,13 @@ fun SplashScreen(onNext: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        Lumi(size = 150.dp)
         Text("MoodJournal", style = MaterialTheme.typography.headlineLarge)
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = onNext) {
-            Text("Commencer")
-        }
+        FilledButton(onClick = {
+            onNext()
+        },
+            text = "Commencer"
+        )
     }
 }

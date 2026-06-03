@@ -18,10 +18,14 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    primary = Terracotta,
+    secondary = Sage,
+    tertiary = Cream,
+    primaryContainer = TerracottaBg,
+    secondaryContainer = SageBg,
+    tertiaryContainer = CreamBg,
 
+    background = Cream
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
     surface = Color(0xFFFFFBFE),

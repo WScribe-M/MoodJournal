@@ -1,6 +1,5 @@
 package com.example.moodjournal.ui.onboarding
 
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,12 +8,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,9 +20,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.moodjournal.ui.components.FilledButton
+import com.example.moodjournal.ui.components.MoodTextField
 import com.example.moodjournal.viewmodel.MoodJournalViewModel
-import kotlinx.coroutines.selects.select
 
 @Composable
 fun SignupScreen(
@@ -45,30 +41,30 @@ fun SignupScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text("Créer un compte", style = MaterialTheme.typography.headlineLarge)
+        Text("Créer un compte", style = MaterialTheme.typography.titleLarge)
         Spacer(modifier = Modifier.height(16.dp))
 
-        OutlinedTextField(
+        MoodTextField(
             value = nom,
             onValueChange = { nom = it },
-            label = { Text("Nom") },
-            modifier = Modifier.fillMaxWidth()
+            label = "Nom",
+            placeholder = "Nom..."
         )
-        OutlinedTextField(
+        MoodTextField(
             value = prenom,
             onValueChange = { prenom = it },
-            label = { Text("Prenom") },
-            modifier = Modifier.fillMaxWidth()
+            label = "Prenom",
+            placeholder = "Prenom..."
         )
-        OutlinedTextField(
+        MoodTextField(
             value = email,
             onValueChange = { email = it },
-            label = { Text("Adresse mail") },
-            modifier = Modifier.fillMaxWidth()
+            label = "Adresse mail",
+            placeholder = "Adresse mail..."
         )
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
         ) {
             sexes.forEach {
                 FilterChip(
@@ -80,13 +76,12 @@ fun SignupScreen(
                 )
             }
         }
-        Button(onClick = {
+        FilledButton(onClick = {
             viewModel.saveUser(nom, prenom, email, sexe)
             onNext()
         },
-            enabled = isValid
-        ) {
-            Text("Continuer")
-        }
+            enabled = isValid,
+            text = "Continuer"
+        )
     }
 }

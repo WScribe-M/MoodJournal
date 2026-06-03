@@ -16,17 +16,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.ui.Alignment
+import com.example.moodjournal.ui.components.FilledButton
+import com.example.moodjournal.ui.components.GhostButton
 import com.example.moodjournal.viewmodel.MoodJournalViewModel
 
 @Composable
 fun QuizScreen(
     viewModel: MoodJournalViewModel,
     modifier: Modifier = Modifier,
-    onNext: () -> Unit
+    onNext: () -> Unit,
+    onBack: () -> Unit
 ) {
     var currentIndex by remember { mutableStateOf(0) }
-    var reponses by remember { mutableStateOf(mutableListOf<Int>()) }
     val allQuestions = listOf(
         "Tu te réveilles souvent la nuit et as du mal à te rendormir.",
         "Tu te sens triste, vide ou désespéré·e.",
@@ -42,6 +45,7 @@ fun QuizScreen(
         "Plus de la moitié",
         "Presque tous les jours"
     )
+    var reponses by remember { mutableStateOf(MutableList(7) { -1 }) }
 
     Column(
         modifier = modifier.fillMaxSize().padding(24.dp)
@@ -53,21 +57,41 @@ fun QuizScreen(
             verticalArrangement = Arrangement.Center
         ) {
             itemsIndexed(allReponses) { index, reponse ->
-                FilterChip(
-                    selected = false,
+                GhostButton(
                     onClick = {
-                        reponses = (reponses + index).toMutableList()
-                        if (currentIndex < allQuestions.size - 1) {
-                            currentIndex++
-                        } else {
-                            onNext()
-                        }
+                        val newReponses = reponses.toMutableList()
+                        newReponses[currentIndex] = index
+                        reponses = newReponses
                         viewModel.updateReponses(reponses)
                     },
-                    label = { Text(reponse) }
+                    text = reponse,
+                    modifier = Modifier.fillMaxWidth(),
+                    isSelected = reponses.getOrNull(currentIndex) == index
                 )
             }
+
         }
+        FilledButton(onClick = {
+            if (currentIndex < allQuestions.size - 1) {
+                currentIndex++
+            } else {
+                onNext()
+            }
+        },
+            text = "Suivant"
+        )
+
+        GhostButton(onClick = {
+            if (currentIndex == 0) {
+                onBack()
+            } else {
+                currentIndex--
+            }
+        },
+            text = "Retour",
+            modifier = Modifier,
+            isSelected = false
+        )
     }
 
 }

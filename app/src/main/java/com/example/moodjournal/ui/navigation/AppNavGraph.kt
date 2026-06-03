@@ -72,7 +72,7 @@ fun AppNavGraph() {
                 GoalsScreen(viewModel = viewModel, onNext = { navController.navigate("quiz") })
             }
             composable("quiz") {
-                QuizScreen(viewModel = viewModel, onNext = { navController.navigate("report") })
+                QuizScreen(viewModel = viewModel, onNext = { navController.navigate("report") }, onBack = { navController.popBackStack()})
             }
             composable("report") {
                 ReportScreen(viewModel = viewModel, onNext = { navController.navigate("home") })
