@@ -22,4 +22,8 @@ class GratitudeStorage(context: Context) {
         val type = object : TypeToken<List<Gratitude>>() {}.type
         return gson.fromJson(json, type)
     }
+
+    fun clearGratitude() {
+        prefs.edit().remove(key).apply()
+    }
 }

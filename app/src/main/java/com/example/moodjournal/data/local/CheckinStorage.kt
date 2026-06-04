@@ -23,4 +23,8 @@ class CheckinStorage (context: Context) {
         val type = object : TypeToken<List<CheckIn>>() {}.type
         return gson.fromJson(json, type)
     }
+
+    fun clearCheckins() {
+        prefs.edit().remove(key).apply()
+    }
 }

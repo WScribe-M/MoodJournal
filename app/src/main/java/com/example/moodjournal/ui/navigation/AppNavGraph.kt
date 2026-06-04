@@ -1,19 +1,20 @@
 package com.example.moodjournal.ui.navigation
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.runtime.remember
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Build
-import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -21,7 +22,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.moodjournal.ui.history.HistoryScreen
 import com.example.moodjournal.ui.home.AIResponseScreen
 import com.example.moodjournal.ui.home.HomeScreen
 import com.example.moodjournal.ui.onboarding.CheckinScreen
@@ -34,6 +34,10 @@ import com.example.moodjournal.ui.onboarding.ToolsScreen
 import com.example.moodjournal.ui.profile.ProfileScreen
 import com.example.moodjournal.ui.tools.BreathingScreen
 import com.example.moodjournal.ui.tools.GratitudeScreen
+import com.example.moodjournal.ui.theme.Ink3
+import com.example.moodjournal.ui.theme.Paper
+import com.example.moodjournal.ui.theme.Terracotta
+import com.example.moodjournal.ui.theme.TerracottaBg
 import com.example.moodjournal.viewmodel.MoodJournalViewModel
 
 @Composable
@@ -41,17 +45,16 @@ fun AppNavGraph() {
     val navController = rememberNavController()
     val viewModel: MoodJournalViewModel = viewModel()
 
-    // Récupère la route actuelle pour savoir si on doit afficher la TabBar
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
-    val showTabBar = currentRoute in listOf("home", "history", "tools", "profile")
+    val showTabBar = currentRoute in listOf("home", "tools", "profile")
 
     Scaffold(
         bottomBar = {
             if (showTabBar) {
                 BottomTabBar(navController = navController, currentRoute = currentRoute)
             }
-        }
+        },
     ) { padding ->
         val startDestination = remember {
             val user = viewModel.getUser()
@@ -60,7 +63,7 @@ fun AppNavGraph() {
         NavHost(
             navController = navController,
             startDestination = startDestination,
-            modifier = Modifier.padding(padding)
+            modifier = Modifier.padding(padding),
         ) {
             composable("splash") {
                 SplashScreen(onNext = { navController.navigate("signup") })
@@ -72,35 +75,43 @@ fun AppNavGraph() {
                 GoalsScreen(viewModel = viewModel, onNext = { navController.navigate("quiz") })
             }
             composable("quiz") {
-                QuizScreen(viewModel = viewModel, onNext = { navController.navigate("report") }, onBack = { navController.popBackStack()})
+                QuizScreen(
+                    viewModel = viewModel,
+                    onNext = { navController.navigate("report") },
+                    onBack = { navController.popBackStack() },
+                )
             }
             composable("report") {
                 ReportScreen(viewModel = viewModel, onNext = { navController.navigate("home") })
             }
             composable("home") {
-                HomeScreen(viewModel = viewModel, onNext = { navController.navigate("checkin") })
+                HomeScreen(
+                    viewModel = viewModel,
+                    onNext = { navController.navigate("checkin") },
+                    onTool = { tool -> navController.navigate(tool) },
+                )
             }
             composable("checkin") {
                 CheckinScreen(
                     viewModel = viewModel,
-                    onNext = { navController.navigate("aiResponse") })
+                    onNext = { navController.navigate("aiResponse") },
+                )
             }
             composable("aiResponse") {
                 AIResponseScreen(
                     viewModel = viewModel,
-                    onNext = { navController.navigate("history") })
-            }
-            composable("history") {
-                HistoryScreen(viewModel = viewModel, onNext = { navController.navigate("rien") })
+                    onNext = {
+                        navController.navigate("home") {
+                            popUpTo("home") { inclusive = true }
+                        }
+                    },
+                )
             }
             composable("breathing") {
                 BreathingScreen(onClose = { navController.popBackStack() })
             }
             composable("gratitude") {
-                GratitudeScreen(
-                    viewModel = viewModel,
-                    onClose = { navController.popBackStack() }
-                )
+                GratitudeScreen(onClose = { navController.popBackStack() })
             }
             composable("tools") {
                 ToolsScreen(onTool = { tool -> navController.navigate(tool) })
@@ -108,11 +119,7 @@ fun AppNavGraph() {
             composable("profile") {
                 ProfileScreen(
                     viewModel = viewModel,
-                    onLogout = {
-                        navController.navigate("splash") {
-                            popUpTo(0)
-                        }
-                    }
+                    onLogout = { navController.navigate("splash") { popUpTo(0) } },
                 )
             }
         }
@@ -122,13 +129,12 @@ fun AppNavGraph() {
 @Composable
 fun BottomTabBar(navController: NavHostController, currentRoute: String?) {
     val tabs = listOf(
-        Triple("home", "Accueil", Icons.Default.Home),
-        Triple("history", "Historique", Icons.Default.DateRange),
-        Triple("tools", "Outils", Icons.Default.Build),
-        Triple("profile", "Profil", Icons.Default.Person)
+        Triple("home",    "Accueil", Icons.Default.Home),
+        Triple("tools",   "Outils",  Icons.Default.FavoriteBorder),
+        Triple("profile", "Profil",  Icons.Default.Person),
     )
 
-    NavigationBar {
+    NavigationBar(containerColor = Paper) {
         tabs.forEach { (route, label, icon) ->
             NavigationBarItem(
                 selected = currentRoute == route,
@@ -139,7 +145,14 @@ fun BottomTabBar(navController: NavHostController, currentRoute: String?) {
                     }
                 },
                 icon = { Icon(icon, contentDescription = label) },
-                label = { Text(label) }
+                label = { Text(label, style = MaterialTheme.typography.bodySmall) },
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor   = Terracotta,
+                    selectedTextColor   = Terracotta,
+                    indicatorColor      = TerracottaBg,
+                    unselectedIconColor = Ink3,
+                    unselectedTextColor = Ink3,
+                ),
             )
         }
     }
