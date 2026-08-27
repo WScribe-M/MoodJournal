@@ -25,6 +25,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.moodjournal.ui.home.AIResponseScreen
 import com.example.moodjournal.ui.home.HomeScreen
 import com.example.moodjournal.ui.onboarding.CheckinScreen
+import com.example.moodjournal.ui.onboarding.ConsentScreen
 import com.example.moodjournal.ui.onboarding.GoalsScreen
 import com.example.moodjournal.ui.onboarding.QuizScreen
 import com.example.moodjournal.ui.onboarding.ReportScreen
@@ -58,7 +59,8 @@ fun AppNavGraph() {
     ) { padding ->
         val startDestination = remember {
             val user = viewModel.getUser()
-            if (user != null && !user.objectifs.isNullOrEmpty()) "home" else "splash"
+            val onboardingDone = user != null && !user.objectifs.isNullOrEmpty() && viewModel.hasConsent()
+            if (onboardingDone) "home" else "splash"
         }
         NavHost(
             navController = navController,
@@ -66,7 +68,14 @@ fun AppNavGraph() {
             modifier = Modifier.padding(padding),
         ) {
             composable("splash") {
-                SplashScreen(onNext = { navController.navigate("signup") })
+                SplashScreen(onNext = { navController.navigate("consent") })
+            }
+            composable("consent") {
+                ConsentScreen(
+                    viewModel = viewModel,
+                    onNext = { navController.navigate("signup") },
+                    onBack = { navController.popBackStack() },
+                )
             }
             composable("signup") {
                 SignupScreen(viewModel = viewModel, onNext = { navController.navigate("goals") })

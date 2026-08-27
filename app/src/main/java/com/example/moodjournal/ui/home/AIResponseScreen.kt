@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.moodjournal.ui.components.FilledButtonBlock
 import com.example.moodjournal.ui.components.Lumi
+import com.example.moodjournal.ui.components.LumiMood
 import com.example.moodjournal.ui.components.ScreenHeader
 import com.example.moodjournal.ui.components.emotionById
 import com.example.moodjournal.ui.theme.Cream2
@@ -52,7 +53,7 @@ fun AIResponseScreen(
     if (viewModel.aiCheckinResponse.isEmpty()) {
         Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Lumi(size = 100.dp)
+                Lumi(size = 100.dp, mood = LumiMood.THINKING)
                 Spacer(Modifier.height(24.dp))
                 CircularProgressIndicator(color = Terracotta, strokeWidth = 2.dp)
                 Spacer(Modifier.height(16.dp))
@@ -63,6 +64,11 @@ fun AIResponseScreen(
     }
 
     val emotion = emotionById(viewModel.checkinEmotion)
+    val lumiMood = when (viewModel.checkinEmotion) {
+        "anxious", "overwhelmed", "sad" -> LumiMood.CONCERNED
+        "joy", "grateful"               -> LumiMood.HAPPY
+        else                            -> LumiMood.CALM
+    }
 
     Column(
         modifier = modifier
@@ -105,7 +111,7 @@ fun AIResponseScreen(
                 verticalAlignment = Alignment.Bottom,
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                Lumi(size = 36.dp)
+                Lumi(size = 36.dp, mood = lumiMood)
                 Box(
                     modifier = Modifier
                         .weight(1f)

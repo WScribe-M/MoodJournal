@@ -10,6 +10,7 @@ class UserStorage (context: Context){
     private val prefs = context.getSharedPreferences("moodjournal", Context.MODE_PRIVATE)
     private val gson = Gson()
     private val key = "users"
+    private val consentKey = "consent"
 
     fun saveUser(user: User){
         val json = gson.toJson(user)
@@ -22,6 +23,13 @@ class UserStorage (context: Context){
     }
 
     fun clearUser(){
-        prefs.edit().remove(key).apply()
+        prefs.edit().remove(key).remove(consentKey).apply()
     }
+
+    // Consentement RGPD recueilli à l'onboarding (stockage + traitement IA tiers)
+    fun setConsentGiven(given: Boolean){
+        prefs.edit().putBoolean(consentKey, given).apply()
+    }
+
+    fun hasConsent(): Boolean = prefs.getBoolean(consentKey, false)
 }

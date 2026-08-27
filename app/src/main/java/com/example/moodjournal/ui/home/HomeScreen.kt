@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.moodjournal.ui.components.FilledButtonBlock
 import com.example.moodjournal.ui.components.Lumi
+import com.example.moodjournal.ui.components.LumiMood
 import com.example.moodjournal.ui.theme.Blush
 import com.example.moodjournal.ui.theme.BlushBg
 import com.example.moodjournal.ui.theme.Ink
@@ -106,7 +107,7 @@ fun HomeScreen(
                     verticalAlignment = Alignment.Top,
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
-                    Lumi(size = 56.dp)
+                    Lumi(size = 56.dp, mood = LumiMood.HAPPY)
                     Column {
                         Text("Lumi", style = MaterialTheme.typography.labelMedium, color = Paper.copy(alpha = 0.9f))
                         Spacer(Modifier.height(2.dp))
@@ -186,7 +187,7 @@ fun HomeScreen(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalAlignment = Alignment.Top,
             ) {
-                Lumi(size = 40.dp)
+                Lumi(size = 40.dp, mood = LumiMood.CALM)
                 Text(
                     "Chaque émotion que tu nommes, c'est une victoire. " +
                             "Tu n'as pas besoin de tout résoudre aujourd'hui.",

@@ -124,7 +124,7 @@ fun SignupScreen(
             Spacer(Modifier.weight(1f))
 
             Text(
-                "🔒 Tes données ne quittent jamais ton appareil.",
+                "🔒 Ton profil reste stocké en local. Tes check-ins sont traités par une IA (voir l'étape précédente).",
                 style = MaterialTheme.typography.bodySmall,
                 color = Ink3,
             )

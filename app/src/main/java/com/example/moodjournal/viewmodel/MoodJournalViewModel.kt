@@ -70,6 +70,10 @@ class MoodJournalViewModel(application: Application) : AndroidViewModel(applicat
 
     fun clearUser() = userStorage.clearUser()
 
+    fun setConsentGiven(given: Boolean) = userStorage.setConsentGiven(given)
+
+    fun hasConsent(): Boolean = userStorage.hasConsent()
+
     fun updateUserObjectifs(objectifs: List<String>) {
         val current = userStorage.getUser() ?: return
         userStorage.saveUser(current.copy(objectifs = objectifs))

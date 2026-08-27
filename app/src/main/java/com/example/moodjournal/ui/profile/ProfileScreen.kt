@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.moodjournal.ui.components.Lumi
+import com.example.moodjournal.ui.components.LumiMood
 import com.example.moodjournal.ui.theme.Blush
 import com.example.moodjournal.ui.theme.BlushBg
 import com.example.moodjournal.ui.theme.Ink
@@ -107,7 +108,7 @@ fun ProfileScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(14.dp),
             ) {
-                Lumi(size = 56.dp)
+                Lumi(size = 56.dp, mood = LumiMood.CALM)
                 Column {
                     Text(
                         if (user != null) "${user.prenom} ${user.nom}" else "Invité",
@@ -160,7 +161,7 @@ fun ProfileScreen(
                         val intent = Intent(Intent.ACTION_SEND).apply {
                             type = "text/plain"
                             putExtra(Intent.EXTRA_TEXT, text)
-                            putExtra(Intent.EXTRA_SUBJECT, "Mon profil MoodJournal")
+                            putExtra(Intent.EXTRA_SUBJECT, "Mon profil Lumi")
                         }
                         context.startActivity(Intent.createChooser(intent, "Exporter via…"))
                     },

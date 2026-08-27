@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.moodjournal.ui.components.FilledButtonBlock
 import com.example.moodjournal.ui.components.Lumi
+import com.example.moodjournal.ui.components.LumiMood
 import com.example.moodjournal.ui.components.ScreenHeader
 import com.example.moodjournal.ui.theme.Blush
 import com.example.moodjournal.ui.theme.BlushBg
@@ -62,7 +63,7 @@ fun ReportScreen(
     if (viewModel.aiReport.isEmpty()) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Lumi(size = 100.dp)
+                Lumi(size = 100.dp, mood = LumiMood.THINKING)
                 Spacer(Modifier.height(24.dp))
                 CircularProgressIndicator(color = Terracotta, strokeWidth = 2.dp)
                 Spacer(Modifier.height(16.dp))
@@ -217,7 +218,7 @@ fun ReportScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(10.dp),
                     ) {
-                        Lumi(size = 36.dp)
+                        Lumi(size = 36.dp, mood = LumiMood.CALM)
                         Column {
                             Text("Lumi", style = MaterialTheme.typography.labelMedium, color = Ink)
                             Text("Mon premier message pour toi", style = MaterialTheme.typography.bodySmall, color = Ink2)

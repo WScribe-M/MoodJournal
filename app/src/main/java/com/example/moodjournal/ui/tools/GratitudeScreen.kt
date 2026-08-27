@@ -31,6 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.moodjournal.ui.components.FilledButtonBlock
 import com.example.moodjournal.ui.components.Lumi
+import com.example.moodjournal.ui.components.LumiMood
 import com.example.moodjournal.ui.components.ScreenHeader
 import com.example.moodjournal.ui.theme.Cream2
 import com.example.moodjournal.ui.theme.Ink
@@ -62,7 +63,7 @@ fun GratitudeScreen(onClose: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
-            Lumi(size = 130.dp)
+            Lumi(size = 130.dp, mood = LumiMood.HAPPY)
             Spacer(Modifier.height(18.dp))
             Text("Merci de l'avoir remarqué.", style = MaterialTheme.typography.titleLarge, color = Ink, textAlign = TextAlign.Center)
             Spacer(Modifier.height(6.dp))

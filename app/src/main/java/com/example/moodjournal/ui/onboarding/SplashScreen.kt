@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.moodjournal.ui.components.FilledButtonBlock
 import com.example.moodjournal.ui.components.Lumi
+import com.example.moodjournal.ui.components.LumiMood
 import com.example.moodjournal.ui.theme.Ink
 import com.example.moodjournal.ui.theme.Ink2
 import com.example.moodjournal.ui.theme.Ink3
@@ -55,14 +56,14 @@ fun SplashScreen(onNext: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                "MOODJOURNAL",
+                "LUMI",
                 style = MaterialTheme.typography.labelSmall,
                 color = Ink3,
             )
 
             Spacer(Modifier.weight(1f))
 
-            Lumi(size = 150.dp)
+            Lumi(size = 150.dp, mood = LumiMood.CALM)
 
             Spacer(Modifier.height(24.dp))
 
