@@ -29,6 +29,7 @@ import com.example.moodjournal.ui.components.FilledButtonBlock
 import com.example.moodjournal.ui.components.Lumi
 import com.example.moodjournal.ui.components.LumiMood
 import com.example.moodjournal.ui.components.ScreenHeader
+import com.example.moodjournal.ui.components.SoftButton
 import com.example.moodjournal.ui.components.emotionById
 import com.example.moodjournal.ui.theme.Cream2
 import com.example.moodjournal.ui.theme.Ink
@@ -50,7 +51,7 @@ fun AIResponseScreen(
 ) {
     LaunchedEffect(Unit) { viewModel.generateCheckinResponse() }
 
-    if (viewModel.aiCheckinResponse.isEmpty()) {
+    if (viewModel.checkinLoading) {
         Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Lumi(size = 100.dp, mood = LumiMood.THINKING)
@@ -118,11 +119,20 @@ fun AIResponseScreen(
                         .background(Cream2, RoundedCornerShape(4.dp, 18.dp, 18.dp, 18.dp))
                         .padding(14.dp, 12.dp),
                 ) {
-                    Text(
-                        viewModel.aiCheckinResponse,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = Ink,
-                    )
+                    val erreur = viewModel.checkinError
+                    if (erreur != null) {
+                        Column {
+                            Text(erreur, style = MaterialTheme.typography.bodyLarge, color = Ink2)
+                            Spacer(Modifier.height(10.dp))
+                            SoftButton(onClick = { viewModel.retryCheckinResponse() }, text = "Réessayer")
+                        }
+                    } else {
+                        Text(
+                            viewModel.aiCheckinResponse,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = Ink,
+                        )
+                    }
                 }
             }
 

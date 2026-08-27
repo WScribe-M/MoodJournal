@@ -31,6 +31,7 @@ import com.example.moodjournal.ui.components.FilledButtonBlock
 import com.example.moodjournal.ui.components.Lumi
 import com.example.moodjournal.ui.components.LumiMood
 import com.example.moodjournal.ui.components.ScreenHeader
+import com.example.moodjournal.ui.components.SoftButton
 import com.example.moodjournal.ui.theme.Blush
 import com.example.moodjournal.ui.theme.BlushBg
 import com.example.moodjournal.ui.theme.Cream2
@@ -60,7 +61,7 @@ fun ReportScreen(
     val user = viewModel.getUser()
     val prenom = user?.prenom ?: ""
 
-    if (viewModel.aiReport.isEmpty()) {
+    if (viewModel.reportLoading) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Lumi(size = 100.dp, mood = LumiMood.THINKING)
@@ -225,11 +226,19 @@ fun ReportScreen(
                         }
                     }
                     Spacer(Modifier.height(10.dp))
-                    Text(
-                        viewModel.aiReport,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Ink,
-                    )
+                    val erreur = viewModel.reportError
+                    if (erreur != null) {
+                        // Le bilan chiffré reste valable : seul le mot de Lumi manque.
+                        Text(erreur, style = MaterialTheme.typography.bodyMedium, color = Ink2)
+                        Spacer(Modifier.height(12.dp))
+                        SoftButton(onClick = { viewModel.retryReport() }, text = "Réessayer")
+                    } else {
+                        Text(
+                            viewModel.aiReport,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Ink,
+                        )
+                    }
                 }
             }
 
